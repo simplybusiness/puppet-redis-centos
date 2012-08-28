@@ -32,4 +32,15 @@ class redis{
 	  logoutput=>true,
 	  timeout=>1800
 	}
+
+	file { "/etc/init.d/redis-server":
+        mode => "0755",
+        source => 'puppet:///modules/redis/redis-server'
+    }
+
+    exec{'redis-config-startup':
+	    command=>"/sbin/chkconfig --add redis-server; /sbin/chkconfig --level 345 redis-server on; /sbin/service redis-server start",
+		  logoutput=>true,
+		  timeout=>1800
+    }
 }
