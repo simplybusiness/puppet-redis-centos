@@ -1,2 +1,2 @@
-puppet-redis-centos
-===================
+A Puppet Module built for CentOS
+================================
