@@ -17,4 +17,19 @@ class redis{
 	  timeout=>1800,
 	  require=>Package['make', 'gcc', 'wget']
 	}
+
+
+	file { "/etc/redis/":
+	    ensure=>"directory"
+	}
+
+	file { "/var/lib/redis/}":
+	    ensure=>"directory"
+	}
+
+	exec{'redis-config-daemonize':
+	  command=>"sed -e \'s/^daemonize no$/daemonize yes/\' -e \'s/^loglevel debug$/loglevel notice/\' -e \'s/^loglevel verbose$/loglevel notice/\' -e \'s/^logfile stdout$/logfile \\/var\\/log\\/redis.log/\' -e \'s/^dir \\.\\//dir \\/var\\/lib\\/redis\\//\' /tmp/redis/redis-${redis_version}/redis.conf > /etc/redis/redis.conf",
+	  logoutput=>true,
+	  timeout=>1800
+	}
 }
