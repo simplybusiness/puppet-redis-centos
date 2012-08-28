@@ -29,8 +29,10 @@ class redis{
 
 	exec{'redis-config-daemonize':
 	  command=>"sed -e \'s/^daemonize no$/daemonize yes/\' -e \'s/^loglevel debug$/loglevel notice/\' -e \'s/^loglevel verbose$/loglevel notice/\' -e \'s/^logfile stdout$/logfile \\/var\\/log\\/redis.log/\' -e \'s/^dir \\.\\//dir \\/var\\/lib\\/redis\\//\' /tmp/redis/redis-${redis_version}/redis.conf > /etc/redis/redis.conf",
+	  creates=>'/etc/redis/redis.conf',
 	  logoutput=>true,
-	  timeout=>1800
+	  timeout=>1800,
+	  require=>[Exec['redis-download-install']]
 	}
 
 	file { "/etc/init.d/redis-server":
@@ -40,7 +42,8 @@ class redis{
 
     exec{'redis-config-startup':
 	    command=>"/sbin/chkconfig --add redis-server; /sbin/chkconfig --level 345 redis-server on; /sbin/service redis-server start",
-		  logoutput=>true,
-		  timeout=>1800
+		logoutput=>true,
+		timeout=>1800,
+		require=>[Exec['redis-config-daemonize']]
     }
 }
