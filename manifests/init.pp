@@ -23,7 +23,7 @@ class redis{
 	    ensure=>"directory"
 	}
 
-	file { "/var/lib/redis/}":
+	file { "/var/lib/redis/":
 	    ensure=>"directory"
 	}
 
