@@ -5,7 +5,7 @@ Overview
 --------
 This is a puppet module for installing Redis server which has been built and tested on CentOS 5.8
 
-The installation process is based on [Elliot Burggeman's](http://www.ebrueggeman.com/blog/install-redis-centos-56) installation instructions.
+The installation process is based on <a href="http://bit.ly/PNXiJQ" target="_blank">Elliot Burggeman's</a> installation instructions.
 
 Usage
 -----
