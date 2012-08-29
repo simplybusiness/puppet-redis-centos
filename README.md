@@ -10,4 +10,4 @@ The installation process is based on <a href="http://bit.ly/PNXiJQ" target="_bla
 Usage
 -----
  - Git clone this repo into your puppet modules directory
- - In your site.pp add the line: <blockquote><p>require redis</p></blockquote>
+ - In your site.pp add the line: <blockquote><p>include redis</p></blockquote>
