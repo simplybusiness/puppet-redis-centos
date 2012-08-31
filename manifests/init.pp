@@ -1,5 +1,13 @@
 class redis{
 
+	Exec {
+    path=>"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    logoutput=>on_failure
+  }
+
+	package {['make','bzip2','autoconf','automake','libtool','bison', 'gcc', 'wget', 'curl']:
+  }
+
 	$redis_version = "2.4.16"
 
 	file { "/tmp/redis/":
@@ -11,7 +19,7 @@ class redis{
 	}
 
 	exec{'redis-download-install':
-	  command=>"sudo wget --no-check-certificate -r -P /tmp/redis http://redis.googlecode.com/files/redis-${redis_version}.tar.gz; sudo tar -xzf /tmp/redis/redis.googlecode.com/files/redis-${redis_version}.tar.gz -C /tmp/redis; sudo make -C /tmp/redis/redis-${redis_version}; sudo make install -C /tmp/redis/redis-${redis_version}",
+	  command=>"wget --no-check-certificate -r -P /tmp/redis http://redis.googlecode.com/files/redis-${redis_version}.tar.gz; tar -xzf /tmp/redis/redis.googlecode.com/files/redis-${redis_version}.tar.gz -C /tmp/redis; make -C /tmp/redis/redis-${redis_version}; make install -C /tmp/redis/redis-${redis_version}",
 	  creates=>'/usr/local/bin/redis-server',
 	  logoutput=>true,
 	  timeout=>1800,
