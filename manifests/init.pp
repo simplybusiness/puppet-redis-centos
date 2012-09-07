@@ -11,7 +11,7 @@ class redis{
 	}
 
 	exec{'redis-download-install':
-	  command=>"sudo wget --no-check-certificate -r -P /tmp/redis http://redis.googlecode.com/files/redis-${redis_version}.tar.gz; sudo tar -xzf /tmp/redis/redis.googlecode.com/files/redis-${redis_version}.tar.gz -C /tmp/redis; sudo make -C /tmp/redis/redis-${redis_version}; sudo make install -C /tmp/redis/redis-${redis_version}",
+	  command=>"wget --no-check-certificate -r -P /tmp/redis http://redis.googlecode.com/files/redis-${redis_version}.tar.gz; tar -xzf /tmp/redis/redis.googlecode.com/files/redis-${redis_version}.tar.gz -C /tmp/redis; make -C /tmp/redis/redis-${redis_version}; make install -C /tmp/redis/redis-${redis_version}",
 	  creates=>'/usr/local/bin/redis-server',
 	  logoutput=>true,
 	  timeout=>1800,
