@@ -1,13 +1,5 @@
 class redis{
 
-	Exec {
-    path=>"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-    logoutput=>on_failure
-  }
-
-	package {['make','bzip2','autoconf','automake','libtool','bison', 'gcc', 'wget', 'curl']:
-  }
-
 	$redis_version = "2.4.16"
 
 	file { "/tmp/redis/":
