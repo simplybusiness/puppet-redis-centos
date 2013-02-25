@@ -31,8 +31,9 @@ class redis {
   }
 
   service { "redis-server":
-    ensure  => running,
-    enable  => true,
-    require => [File["/etc/init.d/redis-server"], File["/etc/redis/redis.conf"], File["/var/lib/redis/"]],
+    ensure    => running,
+    enable    => true,
+    require   => [File["/etc/init.d/redis-server"], File["/etc/redis/redis.conf"], File["/var/lib/redis/"]],
+    subscribe => File["/etc/redis/redis.conf"],
   }
 }
