@@ -25,7 +25,7 @@ class redis {
 
   file { "/etc/init.d/redis-server":
     mode   => "0755",
-    source => "puppet:///modules/redis/redis-server"
+    source => "puppet:///modules/redis/redis-server",
     owner  => "root",
     group  => "root",
   }
