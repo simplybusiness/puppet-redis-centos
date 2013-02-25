@@ -30,10 +30,9 @@ class redis {
     group  => "root",
   }
 
-  exec { "redis-config-startup":
-    command   => "/sbin/chkconfig --add redis-server; /sbin/chkconfig --level 345 redis-server on; /sbin/service redis-server start",
-    logoutput => true,
-    timeout   => 1800,
-    require   => [File["/etc/init.d/redis-server"], File["/etc/redis/redis.conf"], File["/var/lib/redis/"]],
+  service { "redis-server":
+    ensure  => running,
+    enable  => true,
+    require => [File["/etc/init.d/redis-server"], File["/etc/redis/redis.conf"], File["/var/lib/redis/"]],
   }
 }
