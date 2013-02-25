@@ -1,49 +1,39 @@
-class redis{
+class redis {
 
-	$redis_version = "2.4.16"
+  package { "redis2610":
+  }
 
-	file { "/tmp/redis/":
-	    ensure=>"directory"
-	}
+  file { "/etc/redis/":
+    ensure => "directory",
+    owner  => "root",
+    group  => "root",
+  }
 
-	file { "/tmp/redis/redis-${redis_version}":
-	    ensure=>"directory"
-	}
+  file { "/var/lib/redis/":
+    ensure => "directory",
+    owner  => "root",
+    group  => "root",
+  }
 
-	exec{'redis-download-install':
-	  command=>"wget --no-check-certificate -r -P /tmp/redis http://redis.googlecode.com/files/redis-${redis_version}.tar.gz; tar -xzf /tmp/redis/redis.googlecode.com/files/redis-${redis_version}.tar.gz -C /tmp/redis; make -C /tmp/redis/redis-${redis_version}; make install -C /tmp/redis/redis-${redis_version}",
-	  creates=>'/usr/local/bin/redis-server',
-	  logoutput=>true,
-	  timeout=>1800,
-	  require=>Package['make', 'gcc', 'wget']
-	}
+  file { "/etc/redis/redis.conf":
+    mode    => "0644",
+    source  => "puppet:///modules/redis/redis.conf",
+    require => [File["/etc/redis/"], Package["redis2610"]],
+    owner   => "root",
+    group   => "root",
+  }
 
+  file { "/etc/init.d/redis-server":
+    mode   => "0755",
+    source => "puppet:///modules/redis/redis-server"
+    owner  => "root",
+    group  => "root",
+  }
 
-	file { "/etc/redis/":
-	    ensure=>"directory"
-	}
-
-	file { "/var/lib/redis/":
-	    ensure=>"directory"
-	}
-
-	exec{'redis-config-daemonize':
-	  command=>"sed -e \'s/^daemonize no$/daemonize yes/\' -e \'s/^loglevel debug$/loglevel notice/\' -e \'s/^loglevel verbose$/loglevel notice/\' -e \'s/^logfile stdout$/logfile \\/var\\/log\\/redis.log/\' -e \'s/^dir \\.\\//dir \\/var\\/lib\\/redis\\//\' /tmp/redis/redis-${redis_version}/redis.conf > /etc/redis/redis.conf",
-	  creates=>'/etc/redis/redis.conf',
-	  logoutput=>true,
-	  timeout=>1800,
-	  require=>[Exec['redis-download-install']]
-	}
-
-	file { "/etc/init.d/redis-server":
-        mode => "0755",
-        source => 'puppet:///modules/redis/redis-server'
-    }
-
-    exec{'redis-config-startup':
-	    command=>"/sbin/chkconfig --add redis-server; /sbin/chkconfig --level 345 redis-server on; /sbin/service redis-server start",
-		logoutput=>true,
-		timeout=>1800,
-		require=>[Exec['redis-config-daemonize']]
-    }
+  exec { "redis-config-startup":
+    command   => "/sbin/chkconfig --add redis-server; /sbin/chkconfig --level 345 redis-server on; /sbin/service redis-server start",
+    logoutput => true,
+    timeout   => 1800,
+    require   => [File["/etc/init.d/redis-server"], File["/etc/redis/redis.conf"], File["/var/lib/redis/"]],
+  }
 }
