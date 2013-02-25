@@ -3,22 +3,16 @@ class redis {
   package { "redis2610":
   }
 
-  file { "/etc/redis/":
-    ensure => "directory",
-    owner  => "root",
-    group  => "root",
-  }
-
   file { "/var/lib/redis/":
     ensure => "directory",
     owner  => "root",
     group  => "root",
   }
 
-  file { "/etc/redis/redis.conf":
+  file { "/etc/redis.conf":
     mode    => "0644",
     source  => "puppet:///modules/redis/redis.conf",
-    require => [File["/etc/redis/"], Package["redis2610"]],
+    require => Package["redis2610"],
     owner   => "root",
     group   => "root",
   }
@@ -33,7 +27,7 @@ class redis {
   service { "redis-server":
     ensure    => running,
     enable    => true,
-    require   => [File["/etc/init.d/redis-server"], File["/etc/redis/redis.conf"], File["/var/lib/redis/"]],
+    require   => [File["/etc/init.d/redis-server"], File["/etc/redis.conf"], File["/var/lib/redis/"]],
     subscribe => File["/etc/redis/redis.conf"],
   }
 }
