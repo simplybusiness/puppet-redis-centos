@@ -28,6 +28,6 @@ class redis {
     ensure    => running,
     enable    => true,
     require   => [File["/etc/init.d/redis-server"], File["/etc/redis.conf"], File["/var/lib/redis/"]],
-    subscribe => File["/etc/redis/redis.conf"],
+    subscribe => File["/etc/redis.conf"],
   }
 }
