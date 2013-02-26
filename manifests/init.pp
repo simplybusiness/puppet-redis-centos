@@ -1,6 +1,6 @@
 class redis {
 
-  package { "redis2610":
+  package { "redis":
   }
 
   file { "/var/lib/redis/":
@@ -12,7 +12,7 @@ class redis {
   file { "/etc/redis.conf":
     mode    => "0644",
     source  => "puppet:///modules/redis/redis.conf",
-    require => Package["redis2610"],
+    require => Package["redis"],
     owner   => "root",
     group   => "root",
   }
